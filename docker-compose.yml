@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: text_classification_api
+    ports:
+      - "8000:8000"
+    volumes:
+      # persist trained models and vector store across restarts
+      - ./models:/app/models
+      - ./data/chromadb:/app/data/chromadb
+      - ./logs:/app/logs
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # optional: run training as a one-off before starting the API
+  trainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: text_classification_trainer
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./logs:/app/logs
+    command: python scripts/train.py --model tfidf
+    profiles:
+      - train   # only runs when: docker-compose --profile train up trainer
+
+volumes:
+  models:
+  chromadb_data:
