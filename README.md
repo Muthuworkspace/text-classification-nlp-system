@@ -197,4 +197,5 @@ Using the [20 Newsgroups dataset](http://qwone.com/~jason/20Newsgroups/) (18,000
 
 ## Author
 
-B.Tech Final Year Project — [Your Name]
+MUTHUKUMARESAN V
+
