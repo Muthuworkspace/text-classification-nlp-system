@@ -1,0 +1,54 @@
+data:
+  dataset: "20newsgroups"          # or "custom"
+  custom_csv_path: "data/raw/custom_dataset.csv"
+  text_column: "text"
+  label_column: "label"
+  test_size: 0.2
+  random_seed: 42
+
+preprocessing:
+  max_seq_length: 512
+  remove_stopwords: true
+  lemmatize: true
+  min_token_length: 2
+
+tfidf:
+  max_features: 50000
+  ngram_range: [1, 2]
+  sublinear_tf: true
+  classifier: "svm"               # svm | logreg | rf
+
+embedding:
+  model_name: "all-MiniLM-L6-v2"
+  batch_size: 64
+  normalize: true
+
+transformer:
+  model_name: "roberta-base"      # bert-base-uncased | roberta-base
+  num_epochs: 4
+  learning_rate: 2.0e-5
+  batch_size: 16
+  warmup_steps: 200
+  weight_decay: 0.01
+  max_seq_length: 256
+  save_path: "models/transformer_classifier"
+
+vector_store:
+  collection_name: "document_store"
+  persist_directory: "data/chromadb"
+  embedding_model: "all-MiniLM-L6-v2"
+  distance_metric: "cosine"
+  top_k: 5
+
+extraction:
+  spacy_model: "en_core_web_sm"
+  max_key_phrases: 10
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  default_model: "transformer"
+
+logging:
+  level: "INFO"
+  log_file: "logs/app.log"

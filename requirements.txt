@@ -1,0 +1,36 @@
+# Core NLP
+spacy==3.7.2
+nltk==3.8.1
+
+# Classical ML
+scikit-learn==1.4.0
+scipy==1.12.0
+
+# Transformers + Embeddings
+transformers==4.38.2
+sentence-transformers==2.5.1
+torch==2.2.1
+tokenizers==0.15.2
+
+# Vector Store
+chromadb==0.4.22
+
+# Data handling
+pandas==2.2.0
+numpy==1.26.4
+datasets==2.18.0
+
+# API
+fastapi==0.110.0
+uvicorn[standard]==0.27.1
+pydantic==2.6.3
+
+# Utilities
+PyYAML==6.0.1
+python-dotenv==1.0.1
+tqdm==4.66.2
+loguru==0.7.2
+
+# Testing
+pytest==8.0.2
+httpx==0.27.0
