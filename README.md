@@ -193,6 +193,8 @@ BERT/RoBERTa reduced misclassification by ~22% compared to TF-IDF baseline.
 
 Using the [20 Newsgroups dataset](http://qwone.com/~jason/20Newsgroups/) (18,000+ posts across 20 categories). Can be swapped with any CSV containing `text` and `label` columns.
 
+Above the datasets are used in this project
+
 ---
 
 ## Author
