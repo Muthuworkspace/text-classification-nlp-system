@@ -179,20 +179,123 @@ Semantic search over indexed documents.
 
 ## Model Performance
 
-| Model | Accuracy | F1 (macro) | Latency |
+| Model | Accuracy | 
 |---|---|---|---|
-| TF-IDF + SVM | 84.2% | 0.83 | ~12ms |
-| Dense Embeddings + KNN | 88.7% | 0.87 | ~45ms |
-| Fine-tuned RoBERTa | **91.4%** | **0.91** | ~180ms |
+| TF-IDF + SVM | 75.59% |
+| Dense Embeddings + KNN | 75.86% |
+| RoBERTa Accuracy | 77.12% |
 
-BERT/RoBERTa reduced misclassification by ~22% compared to TF-IDF baseline.
+
+BERT/RoBERTa reduced misclassification by ~6.3% compared to TF-IDF baseline.
 
 ---
+
+
+## 📥 Trained Models
+
+> ⚠️ Model files are not included in this repository.
+> GitHub has a 100MB file size limit — trained model weights
+> exceed 1.6GB total so they are hosted separately.
+
+**Download pre-trained models from Google Drive:**
+
+👉**[Download from Google Drive](https://drive.google.com/drive/folders/10vossy1FjTkXBXihTB2r9NXoxzzhcZLA?usp=sharing)**
+
+After downloading extract and place folders like this:
+
+trained_models/tfidf_classifier/        → models/tfidf_classifier/
+trained_models/embedding_classifier/    → models/embedding_classifier/
+trained_models/transformer_classifier/  → models/transformer_classifier/
+trained_models/chromadb/                → data/chromadb/
+
+Then verify everything works:
+```bash
+python demo.py
+```
+
+### Why models are not in GitHub
+
+This is standard practice in ML projects. Large model weights
+are stored separately from code — same approach used by
+HuggingFace, OpenAI, and most open source ML repositories.
+The training code is fully available in `scripts/train.py`
+to reproduce the models from scratch.
+
+### Reproduce From Scratch (No Download Needed)
+
+If you prefer to train yourself instead of downloading:
+
+```bash
+# Step 1 - install packages
+python setup.py
+
+# Step 2 - train all models (~35 minutes on GPU)
+python scripts/train.py --model all
+
+# Step 3 - index documents into ChromaDB
+python scripts/index_documents.py
+
+# Step 4 - start API
+uvicorn api.main:app --reload
+```
+
+
 
 ## Dataset
+## 📂 Dataset
 
-datasets were used in this project from sci - kit datasets 
+This project uses the **20 Newsgroups dataset** — 18,000+ real news 
+articles across 10 categories.
+
+**No manual download needed.** It loads automatically when you run 
+training:
+
+```python
+from sklearn.datasets import fetch_20newsgroups
+```
+
+### Categories Used
+| Category | Topic |
+|----------|-------|
+| sci.space | Space & Astronomy |
+| sci.med | Medical Science |
+| sci.electronics | Electronics |
+| comp.graphics | Computer Graphics |
+| comp.os.ms-windows.misc | Windows OS |
+| talk.politics.misc | Politics |
+| talk.religion.misc | Religion |
+| rec.sport.hockey | Hockey |
+| rec.autos | Automobiles |
+| soc.religion.christian | Christianity |
+
+### data/ Folder Structure
 ---
+data/
+├── sample/
+│   └── sample_data.csv     ← 20-row sample showing expected CSV format
+├── raw/                    ← place your own dataset CSV here (optional)
+└── processed/              ← auto-created during training
+
+### Using Your Own Dataset
+
+If you want to train on custom data instead of 20 Newsgroups:
+
+1. Place your CSV inside `data/raw/` with two columns:
+text,label
+"your document text here","category_name"
+
+2. Update `configs/config.yaml`:
+```yaml
+data:
+  dataset: "custom"
+  custom_csv_path: "data/raw/your_file.csv"
+```
+
+3. Run training normally:
+```bash
+python scripts/train.py
+```
+
 
 ## Author
 
