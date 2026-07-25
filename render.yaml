@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: text-classification-demo
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port 10000
+    envVars:
+      - key: HF_MODEL_REPO
+        value: Muthuworkspace/text-classification-nlp
+      - key: PYTHON_VERSION
+        value: 3.11.0
