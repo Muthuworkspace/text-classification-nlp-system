@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+pydantic
+huggingface_hub
+scikit-learn
+numpy
+loguru
+python-dotenv

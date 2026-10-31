@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced NLP Research Classifier & RAG</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f4f8; margin: 0; padding: 30px; color: #2c3e50; }
+        .container { max-width: 850px; margin: 0 auto; background: #fff; padding: 35px; border-radius: 12px; box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+        h1 { color: #1e293b; text-align: center; margin-bottom: 25px; font-size: 26px; }
+        label { font-weight: 600; display: block; margin-bottom: 8px; color: #475569; }
+        textarea { width: 100%; height: 120px; padding: 14px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; resize: vertical; box-sizing: border-box; outline: none; }
+        .file-upload-box { margin-bottom: 20px; padding: 15px; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 6px; text-align: center; }
+        button { background-color: #2563eb; color: white; border: none; padding: 14px 20px; font-size: 16px; font-weight: 600; border-radius: 6px; cursor: pointer; margin-top: 15px; width: 100%; transition: background 0.2s; }
+        button:hover { background-color: #1d4ed8; }
+        .result-box { margin-top: 30px; padding: 25px; background: #f8fafc; border: 1px solid #e2e8f0; border-left: 6px solid #2563eb; border-radius: 6px; }
+        .error-box { margin-top: 25px; padding: 15px; background: #fef2f2; border-left: 6px solid #dc2626; color: #991b1b; border-radius: 6px; }
+        .badge { display: inline-block; background: #10b981; color: white; padding: 6px 14px; border-radius: 20px; font-weight: 600; font-size: 15px; }
+        .confidence-badge { display: inline-block; background: #3b82f6; color: white; padding: 6px 14px; border-radius: 20px; font-weight: 600; font-size: 15px; margin-left: 10px; }
+        .rag-card { background: #fff; padding: 15px; margin-top: 12px; border: 1px solid #e2e8f0; border-radius: 6px; }
+        .rag-card small { color: #64748b; display: block; margin-top: 5px; }
+        h3 { margin-top: 0; color: #1e293b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>RoBERTa Research Paper Classifier & RAG</h1>
+        
+        <form action="/predict" method="POST" enctype="multipart/form-data">
+            <div class="file-upload-box">
+                <label for="file">Upload Research Paper PDF:</label>
+                <input type="file" name="file" id="file" accept=".pdf">
+            </div>
+
+            <label for="text">Or Paste Research Paper Abstract/Text:</label>
+            <textarea name="text" id="text" placeholder="Enter abstract or paste text here...">{% if input_text %}{{ input_text }}{% endif %}</textarea>
+            
+            <button type="submit">Classify & Search RAG</button>
+        </form>
+
+        {% if error %}
+        <div class="error-box">
+            <strong>Error:</strong> {{ error }}
+        </div>
+        {% endif %}
+
+        {% if prediction %}
+        <div class="result-box">
+            <h3>Classification Analysis</h3>
+            <p>
+                Predicted Category: <span class="badge">{{ prediction }}</span>
+                {% if confidence %}
+                <span class="confidence-badge">Confidence: {{ confidence }}%</span>
+                {% endif %}
+            </p>
+            
+            <h3 style="margin-top: 25px;">Top Similar Research Chunks (RAG Search)</h3>
+            {% if rag_matches %}
+                {% for match in rag_matches %}
+                <div class="rag-card">
+                    <strong>Source File:</strong> {{ match.source }} | <span>Category: {{ match.category }}</span>
+                    <small>{{ match.snippet }}</small>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No similar documents found in vector store.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
