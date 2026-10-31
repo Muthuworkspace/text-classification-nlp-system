@@ -1,4 +1,0 @@
-Model,Accuracy
-TF-IDF + SVM,75.59%
-Embeddings + KNN,75.86%
-Fine-tuned RoBERTa,77.12%
