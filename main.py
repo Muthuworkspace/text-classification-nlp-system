@@ -6,7 +6,7 @@ from fastapi import FastAPI, Request, Form, UploadFile, File
 from fastapi.responses import HTMLResponse, PlainTextResponse
 from fastapi.templating import Jinja2Templates
 from PyPDF2 import PdfReader
-from src.embedder import TextEmbedder
+from src.embedder import RobertaEmbedder as TextEmbedder
 
 app = FastAPI(title="Research Paper Classification & RAG System")
 
