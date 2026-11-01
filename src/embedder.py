@@ -4,10 +4,6 @@ import torch.nn.functional as F
 
 class TextEmbedder:
     def __init__(self, model_name="sentence-transformers/all-MiniLM-L6-v2"):
-        # This model is tiny, lightning-fast, and fits easily inside Render's 512MB limit!
-
-class RobertaEmbedder:
-    def __init__(self, model_name="roberta-base"):
         print(f"Loading {model_name} from Hugging Face...")
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModel.from_pretrained(model_name)
