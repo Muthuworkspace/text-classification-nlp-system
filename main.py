@@ -22,7 +22,20 @@ print("-> Loading trained KNN classifier...")
 knn_classifier = joblib.load(MODEL_PATH) if MODEL_PATH.exists() else None
 
 print("-> Initializing RoBERTa Embedder...")
-embedder = TextEmbedder()
+# LAZY LOADING INSIDE THE ENDPOINT
+_embedder = None
+
+def get_embedder():
+    global _embedder
+    if _embedder is None:
+        _embedder = TextEmbedder()
+    return _embedder
+
+@app.post("/predict")
+def predict(text: str):
+    embedder = get_embedder()
+    vector = embedder.get_embedding(text)
+    # ... rest of your prediction logic
 
 print("-> Connecting to ChromaDB...")
 chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
